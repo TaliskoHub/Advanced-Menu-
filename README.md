@@ -1,6 +1,7 @@
 --[[ 
-  Script Roblox - Menu Preto com ESP Vermelho, Silent Aimbot (FOV ajustável) e GodMode
-  Para estudos/teste de sistemas UI e lógica em Roblox
+  Script Roblox - Menu Preto (abrir/fechar por bolinha preta)
+  Inclui ESP Vermelho, Silent Aimbot (FOV ajustável) e GodMode.
+  Para estudos/teste de sistemas UI e lógica em Roblox.
 --]]
 
 local Players = game:GetService("Players")
@@ -12,15 +13,34 @@ local Mouse = LocalPlayer:GetMouse()
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = game.CoreGui
 
+-- Bolinha preta para abrir/fechar o menu
+local CircleBtn = Instance.new("TextButton")
+CircleBtn.Size = UDim2.new(0, 36, 0, 36)
+CircleBtn.Position = UDim2.new(0, 10, 0, 80)
+CircleBtn.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
+CircleBtn.BorderSizePixel = 0
+CircleBtn.Text = ""
+CircleBtn.Parent = ScreenGui
+CircleBtn.Name = "OpenMenuCircle"
+CircleBtn.AutoButtonColor = true
+CircleBtn.ZIndex = 3
+CircleBtn.ClipsDescendants = true
+local uicorner = Instance.new("UICorner")
+uicorner.CornerRadius = UDim.new(1, 0)
+uicorner.Parent = CircleBtn
+
+-- Menu principal (começa invisível)
 local Frame = Instance.new("Frame")
 Frame.Size = UDim2.new(0, 250, 0, 340)
-Frame.Position = UDim2.new(0.02, 0, 0.3, 0)
+Frame.Position = UDim2.new(0, 50, 0, 70)
 Frame.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
 Frame.BorderSizePixel = 0
 Frame.Name = "BlackMenuFrame"
 Frame.Parent = ScreenGui
+Frame.Visible = false
+Frame.ZIndex = 2
 
--- Botão de fechar
+-- Botão de fechar dentro do menu
 local CloseBtn = Instance.new("TextButton")
 CloseBtn.Size = UDim2.new(0, 30, 0, 30)
 CloseBtn.Position = UDim2.new(1, -35, 0, 5)
@@ -30,7 +50,12 @@ CloseBtn.Font = Enum.Font.SourceSansBold
 CloseBtn.TextColor3 = Color3.fromRGB(255,255,255)
 CloseBtn.TextSize = 20
 CloseBtn.Parent = Frame
-CloseBtn.MouseButton1Click:Connect(function() ScreenGui:Destroy() end)
+CloseBtn.MouseButton1Click:Connect(function() Frame.Visible = false end)
+
+-- Clicar na bolinha abre/fecha menu
+CircleBtn.MouseButton1Click:Connect(function()
+    Frame.Visible = not Frame.Visible
+end)
 
 -- LABEL "REGULAMENTO" + SLIDER FOV
 local Regulamento = Instance.new("TextLabel")
